@@ -16,6 +16,12 @@ interface AppContextType {
   addExpense: (amount: number, description: string, category: 'Grocery' | 'Meal Cost' | 'Other') => void;
   clearExpenses: () => void;
   
+  // Settings
+  themePref: 'system' | 'light' | 'dark';
+  setThemePref: (theme: 'system' | 'light' | 'dark') => void;
+  language: string;
+  setLanguage: (lang: string) => void;
+
   // Auth
   session: Session | null;
   user: User | null;
@@ -38,6 +44,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [user, setUser] = useState<User | null>(null);
   const [isGuest, setIsGuestState] = useState<boolean>(false);
 
+  // Settings state
+  const [themePref, setThemePrefState] = useState<'system' | 'light' | 'dark'>('system');
+  const [language, setLanguageState] = useState<string>('English');
+
   // Load initial data from storage
   useEffect(() => {
     async function loadData() {
@@ -46,9 +56,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const savedInputs = await Storage.getSavedInputs();
         const savedExpenses = await Storage.getExpenses();
         const guestMode = await Storage.getGuestMode();
+        const savedTheme = await Storage.getTheme();
+        const savedLang = await Storage.getLanguage();
 
         setOnboardingCompleted(onboarded);
         setIsGuestState(guestMode);
+        setThemePrefState(savedTheme);
+        setLanguageState(savedLang);
 
         if (savedInputs) {
           setUserInputs(savedInputs);
@@ -126,6 +140,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     await Storage.setGuestMode(guest);
   };
 
+  const setThemePref = async (theme: 'system' | 'light' | 'dark') => {
+    setThemePrefState(theme);
+    await Storage.setTheme(theme);
+  };
+
+  const setLanguage = async (lang: string) => {
+    setLanguageState(lang);
+    await Storage.setLanguage(lang);
+  };
+
   const logout = async () => {
     await supabase.auth.signOut();
     setSession(null);
@@ -146,6 +170,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         resetPlan,
         addExpense,
         clearExpenses,
+        themePref,
+        setThemePref,
+        language,
+        setLanguage,
         session,
         user,
         isGuest,

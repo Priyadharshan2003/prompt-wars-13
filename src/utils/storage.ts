@@ -5,6 +5,8 @@ const ONBOARDING_KEY = '@cooksmart:onboarding';
 const INPUTS_KEY = '@cooksmart:inputs';
 const EXPENSES_KEY = '@cooksmart:expenses';
 const GUEST_KEY = '@cooksmart:guest_mode';
+const THEME_KEY = '@cooksmart:theme';
+const LANGUAGE_KEY = '@cooksmart:language';
 
 export interface ExpenseItem {
   id: string;
@@ -84,6 +86,41 @@ export const Storage = {
       await AsyncStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses));
     } catch (e) {
       console.error('Error saving expenses', e);
+    }
+  },
+
+  // Settings
+  async getTheme(): Promise<'system' | 'light' | 'dark'> {
+    try {
+      const val = await AsyncStorage.getItem(THEME_KEY);
+      return (val as 'system' | 'light' | 'dark') || 'system';
+    } catch {
+      return 'system';
+    }
+  },
+
+  async setTheme(theme: 'system' | 'light' | 'dark'): Promise<void> {
+    try {
+      await AsyncStorage.setItem(THEME_KEY, theme);
+    } catch (e) {
+      console.error('Error saving theme', e);
+    }
+  },
+
+  async getLanguage(): Promise<string> {
+    try {
+      const val = await AsyncStorage.getItem(LANGUAGE_KEY);
+      return val || 'English';
+    } catch {
+      return 'English';
+    }
+  },
+
+  async setLanguage(lang: string): Promise<void> {
+    try {
+      await AsyncStorage.setItem(LANGUAGE_KEY, lang);
+    } catch (e) {
+      console.error('Error saving language', e);
     }
   },
 

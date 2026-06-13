@@ -20,16 +20,28 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function ThemeWrapper({ children }: { children: React.ReactNode }) {
+  const systemScheme = useColorScheme();
+  const { themePref } = useApp();
+  
+  const activeScheme = themePref === 'system' ? systemScheme : themePref;
+  
+  return (
+    <ThemeProvider value={activeScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      {children}
+    </ThemeProvider>
+  );
+}
+
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   return (
     <AppProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeWrapper>
         <AnimatedSplashOverlay />
         <AuthGuard>
           <AppTabs />
         </AuthGuard>
-      </ThemeProvider>
+      </ThemeWrapper>
     </AppProvider>
   );
 }

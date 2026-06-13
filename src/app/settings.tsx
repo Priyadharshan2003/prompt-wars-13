@@ -5,11 +5,14 @@ import { Colors } from '../styles/theme';
 import { useApp } from '../logic/AppContext';
 import Button from '../components/Button';
 import Storage from '../utils/storage';
+import SegmentControl from '../components/SegmentControl';
+import Dropdown from '../components/Dropdown';
 
 export default function SettingsScreen() {
-  const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const colors = Colors[scheme];
-  const { user, isGuest, logout, resetPlan, clearExpenses } = useApp();
+  const { user, isGuest, logout, resetPlan, clearExpenses, themePref, setThemePref, language, setLanguage } = useApp();
+  const systemScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const activeScheme = themePref === 'system' ? systemScheme : themePref;
+  const colors = Colors[activeScheme];
 
   const handleClearData = async () => {
     resetPlan();
@@ -38,6 +41,35 @@ export default function SettingsScreen() {
             <Button title="Sign out" onPress={logout} variant="outline" style={{ marginTop: 16 }} />
           </View>
         )}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.textSecondary }]}>Preferences</Text>
+        
+        <Text style={[styles.infoText, { color: colors.text, marginBottom: 8, fontWeight: '600' }]}>Theme</Text>
+        <SegmentControl
+          values={['System', 'Light', 'Dark']}
+          selectedIndex={['system', 'light', 'dark'].indexOf(themePref)}
+          onChange={(idx) => {
+            const vals = ['system', 'light', 'dark'] as const;
+            setThemePref(vals[idx]);
+          }}
+        />
+        
+        <View style={{ marginTop: 24 }}>
+          <Dropdown
+            label="Language"
+            options={[
+              { label: 'English', value: 'English' },
+              { label: 'Español (Spanish)', value: 'Spanish' },
+              { label: 'தமிழ் (Tamil)', value: 'Tamil' },
+              { label: 'Français (French)', value: 'French' },
+              { label: 'Deutsch (German)', value: 'German' }
+            ]}
+            selectedValue={language}
+            onValueChange={setLanguage}
+          />
+        </View>
       </View>
 
       <View style={styles.section}>

@@ -36,7 +36,11 @@ export const SplashOnboarding: React.FC<SplashOnboardingProps> = ({ onComplete }
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.splashContent}>
           <View style={[styles.logoContainer, { backgroundColor: colors.cardBackground, ...Shadows }]}>
-            <Text style={styles.logoEmoji}>🍳</Text>
+            <Image 
+              source={require('../../assets/images/icon.png')} 
+              style={{ width: 80, height: 80, borderRadius: 16 }} 
+              resizeMode="contain" 
+            />
           </View>
           <Text style={[styles.appName, { color: colors.text }]}>CookSmart AI+</Text>
           <Text style={[styles.tagline, { color: colors.textSecondary }]}>
