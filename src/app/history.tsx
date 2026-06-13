@@ -61,9 +61,9 @@ export default function HistoryScreen() {
                 {formatCurrency(item.total_cost)}
               </Text>
               <View style={styles.mealRow}>
-                <Text style={{ color: colors.textSecondary }}>B: {item.breakfast.title}</Text>
-                <Text style={{ color: colors.textSecondary }}>L: {item.lunch.title}</Text>
-                <Text style={{ color: colors.textSecondary }}>D: {item.dinner.title}</Text>
+                <Text style={{ color: colors.textSecondary }}>B: {item.breakfast.name}</Text>
+                <Text style={{ color: colors.textSecondary }}>L: {item.lunch.name}</Text>
+                <Text style={{ color: colors.textSecondary }}>D: {item.dinner.name}</Text>
               </View>
             </Card>
           )}

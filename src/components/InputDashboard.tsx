@@ -34,6 +34,7 @@ export const InputDashboard: React.FC<InputDashboardProps> = ({ onGenerate, save
   const [wakeTime, setWakeTime] = useState('07:00');
   const [sleepTime, setSleepTime] = useState('22:00');
   const [nightPlanning, setNightPlanning] = useState(true);
+  const [regretMinimizer, setRegretMinimizer] = useState(true);
 
   // Errors State
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -51,6 +52,7 @@ export const InputDashboard: React.FC<InputDashboardProps> = ({ onGenerate, save
       setWakeTime(savedInputs.wakeTime || '07:00');
       setSleepTime(savedInputs.sleepTime || '22:00');
       setNightPlanning(savedInputs.nightPlanningMode);
+      setRegretMinimizer(savedInputs.regretMinimizerMode ?? true);
       if (savedInputs.location) {
         setCountry(savedInputs.location.country);
         setStateRegion(savedInputs.location.state);
@@ -98,6 +100,7 @@ export const InputDashboard: React.FC<InputDashboardProps> = ({ onGenerate, save
       wakeTime,
       sleepTime,
       nightPlanningMode: nightPlanning,
+      regretMinimizerMode: regretMinimizer,
       location: {
         country,
         state: stateRegion
@@ -131,6 +134,7 @@ export const InputDashboard: React.FC<InputDashboardProps> = ({ onGenerate, save
       wakeTime: '07:30',
       sleepTime: '22:30',
       nightPlanningMode: true,
+      regretMinimizerMode: true,
       location: {
         country,
         state: stateRegion
@@ -304,6 +308,19 @@ export const InputDashboard: React.FC<InputDashboardProps> = ({ onGenerate, save
             <Switch
               value={nightPlanning}
               onValueChange={setNightPlanning}
+              trackColor={{ false: colors.border, true: colors.primary }}
+              thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
+            />
+          </View>
+
+          <View style={styles.toggleRow}>
+            <View style={styles.toggleTextCol}>
+              <Text style={[styles.toggleLabel, { color: colors.text }]}>Regret Minimizer Mode</Text>
+              <Text style={[styles.toggleDesc, { color: colors.textSecondary }]}>Balances cost vs health (avoid cheap unhealthy food)</Text>
+            </View>
+            <Switch
+              value={regretMinimizer}
+              onValueChange={setRegretMinimizer}
               trackColor={{ false: colors.border, true: colors.primary }}
               thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
             />

@@ -24,6 +24,7 @@ Using Expo Camera, simply capture a photo of your grocery receipt. CookSmart's m
 - **Fridge Reality Check**: Enter what you already own to dynamically lower the estimated budget and boost recipe matches.
 - **Budget Stress Indicator**: Advanced logic that tells you if your budget is "Relaxed", "Balanced", "Stretched", or "Stressed".
 - **Zero Decision Mode**: A single tap that randomizes parameters and builds a day for you instantly.
+- **Regret Minimizer Mode**: Specifically penalizes expensive but unhealthy options, balancing the trade-off between cost and health seamlessly.
 
 ---
 
@@ -67,8 +68,8 @@ npx expo start -c
 - Scan the QR code with the Expo Go app to test on your phone.
 
 ### 5. Deployment
-- **Frontend**: The `vercel.json` is configured. Simply link the repository to Vercel for web deployment.
-- **Backend**: Supabase handles the database scaling automatically.
+- **Frontend (Vercel)**: Import your GitHub repo to Vercel. Set Framework Preset to **Other**, Build Command to `npm run build`, and Output Directory to `dist`. Deploy!
+- **Backend (Supabase)**: Handles the database scaling automatically.
 
 ---
 

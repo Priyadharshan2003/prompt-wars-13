@@ -13,6 +13,7 @@ export interface UserInputs {
   wakeTime?: string;
   sleepTime?: string;
   nightPlanningMode: boolean;
+  regretMinimizerMode: boolean;
   location?: LocationData;
 }
 
@@ -54,6 +55,7 @@ export function generateMealPlan(inputs: UserInputs): GeneratedPlan {
     wakeTime = '07:00',
     sleepTime = '22:00',
     nightPlanningMode,
+    regretMinimizerMode,
     location
   } = inputs;
 
@@ -142,6 +144,16 @@ export function generateMealPlan(inputs: UserInputs): GeneratedPlan {
 
     // Boost score significantly for matching ingredients
     score += fridgeMatchPercent * 0.5;
+
+    // Regret Minimizer Mode
+    if (regretMinimizerMode) {
+      const cost = meal.ingredients.reduce((s, i) => s + i.costPerServing, 0);
+      const isExpensive = cost > 4;
+      const isHealthy = meal.healthGoal === 'Balanced' || meal.healthGoal === 'High Protein' || meal.healthGoal === 'Low Calorie';
+      
+      if (isExpensive && !isHealthy) score -= 30; // High regret
+      if (!isExpensive && isHealthy) score += 20; // Low regret
+    }
 
     // Region Matching Boost
     if (location) {
